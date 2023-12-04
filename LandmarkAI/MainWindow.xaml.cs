@@ -1,4 +1,6 @@
-﻿using Microsoft.Win32;
+﻿using LandmarkAI.Model;
+using Microsoft.Win32;
+using Newtonsoft.Json;
 using System.IO;
 using System.Net.Http;
 using System.Text;
@@ -52,6 +54,8 @@ namespace LandmarkAI
             content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue(content_type);
             var response = await client.PostAsync(url, content);
             var responseString = await response.Content.ReadAsStringAsync();
+            var predictions = (JsonConvert.DeserializeObject<CustomVision>(responseString)).Predictions.ToList();
+            predictionsListView.ItemsSource = predictions;
         }
     }
 }
